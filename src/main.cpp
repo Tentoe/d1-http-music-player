@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include "Music.cpp"
 #include <ESP8266WiFi.h>
-#include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
@@ -47,15 +46,11 @@ void setup()
   Serial.println(WiFi.localIP());
   Music::playCoin();
 
-  
-  const char playURL[] = "/play/";
   for (int i = 0; i < Music::COUNT; i++)
   {
-    
-    const char *const title = Music::getTitle(i);
-    char uri[30];
-    strcpy(uri, playURL);
-    strcat(uri, title);
+
+    String uri = "/play/";
+    uri += Music::getTitle(i);
     Serial.println(uri);
     server.on(uri, [i]() {
       server.send(200, "text/plain", "this works as well");
