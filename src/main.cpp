@@ -6,7 +6,7 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
-const char *ssid = "AP-CTL";
+const char *ssid = "K-LAN";
 const char *password = "";
 
 ESP8266WebServer server(80);
@@ -47,42 +47,48 @@ void setup()
   Serial.println(WiFi.localIP());
   Music::playCoin();
 
-  
   const char playURL[] = "/play/";
+
   for (int i = 0; i < Music::COUNT; i++)
   {
-    
+
     const char *const title = Music::getTitle(i);
     char uri[30];
     strcpy(uri, playURL);
     strcat(uri, title);
     Serial.println(uri);
     server.on(uri, [i]() {
-      server.send(200, "text/plain", "this works as well");
+      server.send(200, "text/html", F("<a href=\"/\">back</a>"));
       Music::play(i);
     });
   }
 
-  server.on("/", []() {
-    server.send(200, "text/plain", "this works as well");
-    Music::playRandom();
+  server.on("/", [playURL]() {
+    String message = "<html><body>";
+
+    for (int i = 0; i < Music::COUNT; i++)
+    {
+      message += "<a href=\"";
+      message += playURL;
+      message += Music::getTitle(i);
+      message += "\">";
+      message += Music::getTitle(i);
+      message += "</a><br>";
+    }
+    message += "</body></html>";
+    server.send(200, "text/html", message);
   });
 
   server.onNotFound(handleNotFound);
 
   server.begin();
-  Serial.println("HTTP server started");
+  Serial.println(F("HTTP server started"));
 }
 
 void loop()
 {
-  server.handleClient();
-
   if (WiFi.isConnected())
   {
     server.handleClient();
-    //Music::play("1-UP");
   }
-  /*
-  delay(10000);*/
 }
