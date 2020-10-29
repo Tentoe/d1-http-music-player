@@ -1,3 +1,4 @@
+#include "config.h"
 #include <Arduino.h>
 #include "Music.cpp"
 #include <ESP8266WiFi.h>
@@ -6,8 +7,9 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
-const char *ssid = "K-LAN";
-const char *password = "";
+
+const char *ssid = CONFIG_SSID;
+const char *password = CONFIG_PASSWORD;
 
 ESP8266WebServer server(80);
 
@@ -31,6 +33,7 @@ void handleNotFound()
 void setup()
 {
   Serial.begin(9600);
+  Serial.println("Serial.begin");
   Serial.println("Serial.begin");
   randomSeed(analogRead(0));
   Music::playCoin();
