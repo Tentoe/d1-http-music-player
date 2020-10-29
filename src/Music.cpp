@@ -1,7 +1,5 @@
 #include <Arduino.h>
-#include <map>
-#include <vector>
-#include <functional>
+
 
 #define SONG_COUNT 15
 
