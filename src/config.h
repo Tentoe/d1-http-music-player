@@ -1,5 +1,8 @@
-#define DEBUG 1
+#define DEBUG true
 
 #define CONFIG_SSID "K-LAN"
 #define CONFIG_PASSWORD "pw"
 
+#define CONFIG_IP 192, 168, 178, 180
+#define CONFIG_GATEWAY 192, 168, 178, 1
+#define CONFIG_SUBNET 255, 255, 255, 0
