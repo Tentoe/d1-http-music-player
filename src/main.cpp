@@ -2,7 +2,6 @@
 #include <Arduino.h>
 #include "Music.cpp"
 #include <ESP8266WiFi.h>
-#include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
@@ -12,6 +11,9 @@ const char *ssid = CONFIG_SSID;
 const char *password = CONFIG_PASSWORD;
 
 ESP8266WebServer server(80);
+IPAddress ip();
+IPAddress gateway();
+IPAddress subnet(255, 255, 0, 0);
 
 void handleNotFound()
 {
@@ -37,20 +39,31 @@ void setup()
   Serial.println("Serial.begin");
   randomSeed(analogRead(0));
   Music::playCoin();
-  WiFi.hostname("Name");
+  WiFi.hostname("musicbox");
+
+  if (!WiFi.config(ip, gateway, subnet))
+  {
+    Serial.println(F("IP-Config is faulty."));
+  }
+
   WiFi.begin(ssid, password);
+
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
     Serial.print(".");
   }
   Serial.println();
-
   Serial.print("Connected, IP address: ");
   Serial.println(WiFi.localIP());
   Music::playCoin();
 
   const char playURL[] = "/play/";
+
+    server.on("/play/random", []() {
+      server.send(200, "text/html", F("<a href=\"/\">back</a>"));
+      Music::playRandom();
+    });
 
   for (int i = 0; i < Music::COUNT; i++)
   {
