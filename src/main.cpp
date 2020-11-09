@@ -1,3 +1,4 @@
+#include "config.h"
 #include <Arduino.h>
 #include "Music.cpp"
 #include <ESP8266WiFi.h>
@@ -5,13 +6,14 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
-const char *ssid = "AP-CTL";
-const char *password = "";
+
+const char *ssid = CONFIG_SSID;
+const char *password = CONFIG_PASSWORD;
 
 ESP8266WebServer server(80);
-IPAddress ip();
-IPAddress gateway();
-IPAddress subnet(255, 255, 0, 0);
+IPAddress ip(CONFIG_IP);
+IPAddress gateway(CONFIG_GATEWAY);
+IPAddress subnet(CONFIG_SUBNET);
 
 void handleNotFound()
 {
@@ -32,45 +34,46 @@ void handleNotFound()
 
 void setup()
 {
+#ifdef DEBUG
   Serial.begin(9600);
   Serial.println("Serial.begin");
+#endif
   randomSeed(analogRead(0));
   Music::playCoin();
   WiFi.hostname("musicbox");
 
+#ifdef DEBUG
   if (!WiFi.config(ip, gateway, subnet))
   {
     Serial.println(F("IP-Config is faulty."));
   }
-
+#endif
   WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
+#ifdef DEBUG
     Serial.print(".");
+#endif
   }
+#ifdef DEBUG
   Serial.println();
   Serial.print("Connected, IP address: ");
   Serial.println(WiFi.localIP());
+#endif
   Music::playCoin();
 
-  const char playURL[] = "/play/";
+  const String playURL = "/play/";
 
-    server.on("/play/random", []() {
+    server.on(playURL + "random", []() {
       server.send(200, "text/html", F("<a href=\"/\">back</a>"));
       Music::playRandom();
     });
 
   for (int i = 0; i < Music::COUNT; i++)
   {
-
-    const char *const title = Music::getTitle(i);
-    char uri[30];
-    strcpy(uri, playURL);
-    strcat(uri, title);
-    Serial.println(uri);
-    server.on(uri, [i]() {
+    server.on(playURL + Music::getTitle(i), [i]() {
       server.send(200, "text/html", F("<a href=\"/\">back</a>"));
       Music::play(i);
     });
@@ -95,7 +98,9 @@ void setup()
   server.onNotFound(handleNotFound);
 
   server.begin();
+#ifdef DEBUG
   Serial.println(F("HTTP server started"));
+#endif
 }
 
 void loop()
