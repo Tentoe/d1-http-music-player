@@ -3,7 +3,7 @@
 #include <vector>
 #include <functional>
 
-#define SONG_COUNT 15
+#define SONG_COUNT 16
 
 const int COIN_SONG[][2] PROGMEM = {{988, 100}, {1319, 300}};
 const int UP_SONG[][2] PROGMEM = {{659, 125}, {784, 125}, {1319, 125}, {1047, 125}, {1175, 125}, {1568, 125}, {0, 250}};
@@ -20,15 +20,16 @@ const int IMPERIAL_SONG[][2] PROGMEM = {{440, 500}, {440, 500}, {440, 500}, {349
 const int GADGET_SONG[][2] PROGMEM = {{220, 187}, {247, 93}, {262, 186}, {294, 93}, {330, 280}, {262, 281}, {311, 281}, {247, 280}, {294, 280}, {262, 281}, {220, 187}, {247, 93}, {262, 186}, {294, 93}, {330, 280}, {440, 281}, {415, 1125}, {220, 187}, {247, 93}, {262, 186}, {294, 93}, {330, 280}, {262, 281}, {311, 281}, {247, 280}, {294, 280}, {262, 281}, {440, 187}, {415, 93}, {392, 186}, {370, 93}, {349, 749}, {330, 280}, {440, 562}, {220, 186}, {247, 93}, {262, 187}, {294, 93}, {330, 281}, {262, 281}, {311, 280}, {247, 280}, {294, 281}, {262, 281}, {220, 186}, {247, 93}, {262, 187}, {294, 93}, {330, 281}, {440, 281}, {415, 1123}, {220, 186}, {247, 93}, {262, 187}, {294, 93}, {330, 281}, {262, 281}, {311, 280}, {247, 280}, {294, 281}, {262, 281}, {440, 186}, {415, 93}, {392, 187}, {370, 93}, {349, 749}, {330, 281}, {440, 843}};
 const int EVANGELION_SONG[][2] PROGMEM = {{262, 476}, {311, 476}, {349, 357}, {311, 357}, {349, 238}, {349, 238}, {349, 238}, {466, 238}, {415, 238}, {392, 119}, {349, 238}, {392, 595}, {392, 476}, {466, 476}, {523, 357}, {349, 357}, {311, 238}, {466, 238}, {466, 238}, {392, 238}, {466, 238}, {466, 357}, {523, 595}, {0, 476}, {622, 238}, {466, 119}, {466, 595}, {0, 238}, {622, 238}, {622, 357}, {698, 357}, {466, 238}, {466, 476}, {0, 238}, {466, 238}, {784, 357}, {831, 357}, {784, 238}, {698, 357}, {622, 357}, {698, 238}, {784, 357}, {831, 357}, {784, 238}, {523, 476}, {0, 238}, {523, 119}, {587, 119}, {622, 357}, {622, 357}, {587, 238}, {587, 476}, {0, 238}, {622, 119}, {698, 119}, {831, 357}, {784, 357}, {698, 238}, {622, 476}, {0, 238}, {784, 238}, {784, 357}, {698, 357}, {659, 238}, {698, 476}, {523, 476}, {523, 952}, {587, 952}};
 const int JUMP_SONG[][2] PROGMEM = {{0, 454}, {587, 454}, {0, 227}, {659, 227}, {0, 454}, {523, 454}, {0, 227}, {523, 227}, {0, 227}, {587, 227}, {0, 227}, {587, 681}, {659, 454}, {0, 227}, {523, 227}, {0, 227}, {440, 454}, {392, 227}, {0, 227}, {392, 1136}};
+const int MARIO_DAMAGE_SONG[][2] PROGMEM = {{440, 66}, {330, 66}, {220, 66}, {0, 200}, {440, 66}, {330, 66}, {220, 66}, {0, 200}, {440, 66}, {330, 66}, {220, 66}};
 
-const int SONG_LENGTHS[SONG_COUNT] PROGMEM = {2, 7, 30, 24, 26, 11, 64, 57, 54, 82, 32, 76, 68, 68, 20};
-const char *const SONG_TITLES[SONG_COUNT] PROGMEM = {"Coin", "1-UP", "Mario_Fanfare", "AXELF", "Hall_of_the_Mountain_King", "Funeral_March", "Zombie_Nation", "Indiana_Jones", "Killing_Me_Softly", "Coffin_Dancers", "The_Good_the_Bad_and_the_Ugly", "Imerial_March", "Inspector_Gadget", "Neon_Genesis_Evangelion", "VanHalen-Jump"};
-const std::array<const int (*)[2], SONG_COUNT> SONGS = {COIN_SONG, UP_SONG, FANFARE_SONG, AXELF_SONG, HALL_SONG, FUNERAL_SONG, ZOMBIE_SONG, INDIE_SONG, KILLING_SONG, COFFIN_SONG, GBU_SONG, IMPERIAL_SONG, GADGET_SONG, EVANGELION_SONG, JUMP_SONG};
+const int SONG_LENGTHS[SONG_COUNT] PROGMEM = {2, 7, 30, 24, 26, 11, 64, 57, 54, 82, 32, 76, 68, 68, 20, 11};
+const char *const SONG_TITLES[SONG_COUNT] PROGMEM = {"Coin", "1-UP", "Mario_Fanfare", "AXELF", "Hall_of_the_Mountain_King", "Funeral_March", "Zombie_Nation", "Indiana_Jones", "Killing_Me_Softly", "Coffin_Dancers", "The_Good_the_Bad_and_the_Ugly", "Imerial_March", "Inspector_Gadget", "Neon_Genesis_Evangelion", "VanHalen-Jump", "Mario_Damage"};
+const std::array<const int (*)[2], SONG_COUNT> SONGS = {COIN_SONG, UP_SONG, FANFARE_SONG, AXELF_SONG, HALL_SONG, FUNERAL_SONG, ZOMBIE_SONG, INDIE_SONG, KILLING_SONG, COFFIN_SONG, GBU_SONG, IMPERIAL_SONG, GADGET_SONG, EVANGELION_SONG, JUMP_SONG, MARIO_DAMAGE_SONG};
 
 class Music
 {
 public:
-    static const int BUZZER_PIN = D5;
+    static const int BUZZER_PIN = D2;
     static const int COUNT = SONG_COUNT;
     static const char *const getTitle(const int i)
     {
